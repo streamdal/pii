@@ -68,7 +68,7 @@ func Phone() Matcher {
 			Any(
 				matchemail,
 				matchfilename,
-				//matchrepeatingnumber, -- breaks on tinygo
+				matchrepeatingnumber,
 				matchluhn,
 			),
 		),
@@ -95,7 +95,7 @@ func SSN() Matcher {
 		All(
 			Not(matchphone),
 			Not(matchfilename),
-			//Not(matchrepeatingnumber), -- Breaks on tinygo
+			Not(matchrepeatingnumber),
 		),
 	)
 }
@@ -119,11 +119,11 @@ func CreditCard() Matcher {
 		Any(
 			matchluhn,
 			matchcreditCard,
-			//matchaltcreditcard, -- Breaks on tinygo
+			matchaltcreditcard,
 		),
 		All(
 			Not(matchuuid),
-			//Not(matchrepeatingnumber),
+			Not(matchrepeatingnumber),
 			// Not(matchfilename),
 			// Not(matchphone),
 			Not(matchtestcreditcard),
@@ -144,19 +144,13 @@ func Address() Matcher {
 
 // BankInfo returns a matcher for identifying either IBANs or US Routing #s
 func BankInfo() Matcher {
-	return Any(
-		matchiban,
-		matchusbankrouting,
+	return And(
+		Any(
+			matchiban,
+			matchusbankrouting,
+		),
+		Not(matchrepeatingnumber),
 	)
-
-	// matchrepeatingnumber breaks on tinygo
-	//return And(
-	//	Any(
-	//		matchiban,
-	//		matchusbankrouting,
-	//	),
-	//	Not(matchrepeatingnumber),
-	//)
 }
 
 // UUID returns a matcher for identifying GUIDs, UUIDs, v3, v4, and v5
@@ -180,7 +174,7 @@ func VIN() Matcher {
 	return All(
 		matchvin,
 		Not(matchfilename),
-		//Not(matchrepeatingnumber), -- Breaks on tinygo
+		Not(matchrepeatingnumber),
 		Not(matchemail),
 	)
 }
