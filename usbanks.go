@@ -1,6 +1,8 @@
 package pii
 
-import "regexp"
+import (
+	regexp "github.com/wasilibs/go-re2"
+)
 
 var (
 	usbanks = []*regexp.Regexp{
